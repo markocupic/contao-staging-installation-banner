@@ -1,54 +1,53 @@
 {
-    "name": "markocupic/sac-event-tool-bundle",
+    "name": "markocupic/contao-staging-installation-banner",
+    "description": "With this extension for Contao CMS, you can display a banner on your staging environment so that there is no confusion with the productive environment during daily work.",
+    "keywords": [
+        "contao",
+        "bundle",
+        "staging",
+        "indicator",
+        "banner"
+    ],
     "type": "contao-bundle",
-    "description": "Contao 4 Event tool bundle for SAC (Swiss Alpine Club Sections)",
-    "license": "GPL-3.0-or-later",
+    "license": "MIT",
     "authors": [
         {
             "name": "Marko Cupic",
-            "homepage": "https://github.com/markocupic"
+            "email": "m.cupic@gmx.ch",
+            "homepage": "https://github.com/markocupic",
+            "role": "Developer"
         }
     ],
+    "support": {
+        "issues": "https://github.com/markocupic/contao-staging-installation-banner/issues",
+        "source": "https://github.com/markocupic/contao-staging-installation-banner"
+    },
     "require": {
         "php": "^8.1",
-        "ext-pdo": "*",
-        "contao/core-bundle": "^4.13",
-        "contao/calendar-bundle": "^4.13",
-        "chillerlan/php-qrcode": "^4.3",
-        "codefog/contao-haste": "^4.25",
-        "eluceo/ical": "^2.5",
-        "league/csv": "^9.7",
-        "markocupic/cloudconvert-bundle": "^2.0",
-        "markocupic/contao-component-fontawesome-free": "^6.0",
-        "markocupic/contao-component-vue-js": "^2.6",
-        "markocupic/contao-custom-global-operation": "^1.0",
-        "markocupic/contao-utf8-arrows-insert-tag-bundle": "^1.0",
-        "markocupic/phpoffice-bundle": "^1.2",
-        "markocupic/rss-feed-generator-bundle": "^1.1",
-        "markocupic/zip-bundle": "^1.0",
-        "menatwork/contao-multicolumnwizard-bundle": "^3.5",
-        "ramsey/uuid": "^3.8|^4.3",
-        "symfony/stopwatch": "*",
-        "tecnickcom/tcpdf": "^6.4",
-        "terminal42/notification_center": "^1.6"
+        "contao/core-bundle": "^4.13 || ^5.0"
     },
     "require-dev": {
-        "contao/easy-coding-standard": "^5.0",
-        "contao/manager-bundle": "^4.13",
         "contao/manager-plugin": "^2.3.1",
-        "contao/test-case": "^4.6",
+        "contao/test-case": "^4.5",
         "phpunit/phpunit": "^9.3",
-        "symfony/phpunit-bridge": "^5.4"
+        "symfony/http-client": "5.4.*",
+        "symfony/phpunit-bridge": "^5.4",
+        "contao/easy-coding-standard": "^3.0"
     },
     "autoload": {
         "psr-4": {
-            "Markocupic\\SacEventToolBundle\\": "src/"
-        },
-        "classmap": [
-            "src/Resources/contao"
-        ]
+            "Markocupic\\ContaoStagingInstallationBanner\\": "src/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "contao-components/installer": true,
+            "contao/manager-plugin": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "contao-community-alliance/composer-plugin": true
+        }
     },
     "extra": {
-        "contao-manager-plugin": "Markocupic\\SacEventToolBundle\\ContaoManager\\Plugin"
+        "contao-manager-plugin": "Markocupic\\ContaoStagingInstallationBanner\\ContaoManager\\Plugin"
     }
 }
