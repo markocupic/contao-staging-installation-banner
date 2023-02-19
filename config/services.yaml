@@ -1,0 +1,12 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $isStaging: '%markocupic_contao_staging_installation_banner.is_staging_system%'
+
+    Markocupic\ContaoStagingInstallationBanner\:
+        resource: ../src/
+        exclude: ../src/{DependencyInjection,Model}
+
