@@ -10,12 +10,13 @@
     font-weight: bold;
 }
 
+.mod_staging_installation_banner_inner img {
+    margin-right: 10px;
+}
+
 @media (max-width: 991px) {
     .mod_staging_installation_banner_inner {
         height: 30px;
         font-size: .875rem;
-    }
-    .mod_staging_installation_banner_inner img {
-        margin-right: 10px;
     }
 }
