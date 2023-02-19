@@ -39,8 +39,9 @@ class OutputBackendTemplateListener
     {
         if ($this->isStaging && str_starts_with($template, 'be_main')) {
             $bannerContent = $this->twig->render('@MarkocupicContaoStagingInstallationBanner/be_staging_installation_indicator_banner.html.twig', []);
-
-            $buffer = str_replace('<header id="header">', $bannerContent."\n".'<header id="header">', $buffer);
+            $search = '<main id="main" aria-labelledby="main_headline">';
+            $replace = $search."\n".$bannerContent;
+            $buffer = str_replace($search, $replace, $buffer);
         }
 
         return $buffer;
