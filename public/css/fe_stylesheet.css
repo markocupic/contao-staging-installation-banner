@@ -1,5 +1,5 @@
-.mod_staging_installation_indicator_banner {
-    display:flex;
+.mod_staging_installation_banner_inner {
+    display: flex;
     background-color: #2a9292;
     color: #fff;
     height: 80px;
@@ -8,4 +8,14 @@
     font-size: 1rem;
     text-transform: uppercase;
     font-weight: bold;
+}
+
+@media (max-width: 991px) {
+    .mod_staging_installation_banner_inner {
+        height: 30px;
+        font-size: .875rem;
+    }
+    .mod_staging_installation_banner_inner img {
+        margin-right: 10px;
+    }
 }

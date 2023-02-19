@@ -15,4 +15,4 @@ declare(strict_types=1);
 /**
  * Miscellaneous
  */
-$GLOBALS['TL_LANG']['MSC']['staging_system'] = '!!! Staging/Test-System !!!';
+$GLOBALS['TL_LANG']['MSC']['staging_system'] = 'Staging/Test-System !!!';

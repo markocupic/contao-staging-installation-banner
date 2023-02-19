@@ -1,5 +1,7 @@
 {% autoescape false %}
     <div id="staging_installation_indicator">
-        <div id="staging_installation_indicator_inner">{{ 'MSC.staging_system'|trans({}, 'contao_default') }}</div>
+        <div id="staging_installation_indicator_inner">
+            <img src="bundles/markocupiccontaostaginginstallationbanner/icons/icon.svg"></img> {{ 'MSC.staging_system'|trans({}, 'contao_default') }}
+        </div>
     </div>
 {% endautoescape %}
