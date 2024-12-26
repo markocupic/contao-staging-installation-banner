@@ -1,0 +1,11 @@
+{% extends "@Contao/frontend_module/_base.html.twig" %}
+
+{% block content %}
+    {% add to head %}
+        <link rel="stylesheet" href="{{ asset('css/fe_stylesheet.css', 'markocupic_contao_staging_installation_banner') }}">
+    {% endadd %}
+    <div class="staging_installation_banner--inner" {% block banner_attributes %}{{ banner_attributes|default('')|raw }}{% endblock %}>
+        {% block banner_icon %}<img class="staging_installation_banner--icon" src="{{ asset('icons/icon.svg', 'markocupic_contao_staging_installation_banner') }}">{% endblock %}
+        {% block banner_text %}<span class="staging_installation_banner--banner_text">{{ bannerText }}</span>{% endblock %}
+    </div>
+{% endblock %}

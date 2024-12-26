@@ -15,6 +15,9 @@ declare(strict_types=1);
 namespace Markocupic\ContaoStagingInstallationBanner\EventListener\ContaoHook;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
+use Contao\CoreBundle\Framework\Adapter;
+use Contao\CoreBundle\Framework\ContaoFramework;
+use Contao\StringUtil;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -25,6 +28,7 @@ use Twig\Error\SyntaxError;
 class OutputBackendTemplateListener
 {
     public function __construct(
+        private readonly ContaoFramework $framework,
         private readonly Environment $twig,
         private readonly TranslatorInterface $translator,
         private readonly bool $isStaging,
@@ -56,7 +60,7 @@ class OutputBackendTemplateListener
             };
 
             $arrStyle = ['color:#'.$this->backendBannerTextColor, 'background:#'.$this->backendBannerBgColor];
-            $template['banner_css'] = implode(';', $arrStyle);
+            $template['banner_css'] = $this->getStringUtil()->specialchars(implode(';', $arrStyle));
 
             $bannerContent = $this->twig->render('@MarkocupicContaoStagingInstallationBanner/be_staging_installation_indicator_banner.html.twig', $template);
 
@@ -66,5 +70,10 @@ class OutputBackendTemplateListener
         }
 
         return $buffer;
+    }
+
+    protected function getStringUtil(): Adapter
+    {
+        return $this->framework->getAdapter(StringUtil::class);
     }
 }

@@ -1,4 +1,4 @@
-.mod_staging_installation_banner_inner {
+.staging_installation_banner--inner {
     display: flex;
     background-color: #EC4899;
     color: #fff;
@@ -10,12 +10,12 @@
     font-weight: bold;
 }
 
-.mod_staging_installation_banner_inner img {
+.staging_installation_banner--inner .staging_installation_banner--icon {
     margin-right: 10px;
 }
 
 @media (max-width: 991px) {
-    .mod_staging_installation_banner_inner {
+    .staging_installation_banner--inner {
         height: 30px;
         font-size: .875rem;
     }
