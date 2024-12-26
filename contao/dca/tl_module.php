@@ -18,8 +18,30 @@ use Markocupic\ContaoStagingInstallationBanner\Controller\FrontendModule\Staging
  * Frontend modules
  */
 $GLOBALS['TL_DCA']['tl_module']['palettes'][StagingInstallationIndicatorBannerController::TYPE] = '
-{title_legend},name,headline,type;
+{title_legend},name,headline,csib_bannerText,type;
+{config_legend},csib_textColor,csib_bgColor;
 {template_legend:hide},customTpl;
 {protected_legend:hide},protected;
 {expert_legend:hide},guests,cssID
 ';
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['csib_bannerText'] = [
+    'search'    => true,
+    'inputType' => 'text',
+    'eval'      => ['maxlength' => 200, 'tl_class' => 'clr'],
+    'sql'       => "varchar(255) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['csib_textColor'] = [
+    'search'    => true,
+    'inputType' => 'text',
+    'eval'      => ['mandatory' => true, 'maxlength' => 6, 'colorpicker' => true, 'isHexColor' => true, 'decodeEntities' => true, 'tl_class' => 'clr w25 wizard'],
+    'sql'       => "varchar(6) COLLATE ascii_bin NOT NULL default 'FFFFFF'",
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['csib_bgColor'] = [
+    'search'    => true,
+    'inputType' => 'text',
+    'eval'      => ['mandatory' => true, 'maxlength' => 6, 'colorpicker' => true, 'isHexColor' => true, 'decodeEntities' => true, 'tl_class' => 'w25 wizard'],
+    'sql'       => "varchar(6) COLLATE ascii_bin NOT NULL default 'EC4899'",
+];

@@ -1,7 +1,7 @@
 {% extends '@Contao/block_unsearchable' %}
 
 {% block content %}
-    <div class="mod_staging_installation_banner_inner">
-        <img src="bundles/markocupiccontaostaginginstallationbanner/icons/icon.svg"></img> {{ 'MSC.staging_system'|trans({}, 'contao_default') }}
+    <div class="mod_staging_installation_banner_inner"{% if bannerCSS|default %} style="{{ bannerCSS }}"{% endif %}>
+        <img src="bundles/markocupiccontaostaginginstallationbanner/icons/icon.svg"></img> {{ bannerText }}
     </div>
 {% endblock %}

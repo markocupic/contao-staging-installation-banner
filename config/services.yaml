@@ -5,8 +5,10 @@ services:
         public: false
         bind:
             $isStaging: '%markocupic_contao_staging_installation_banner.is_staging_system%'
+            $backendBannerTranslatableText: '%markocupic_contao_staging_installation_banner.backend_banner_translatable_text%'
+            $backendBannerTextColor: '%markocupic_contao_staging_installation_banner.backend_banner_text_color%'
+            $backendBannerBgColor: '%markocupic_contao_staging_installation_banner.backend_banner_bg_color%'
 
     Markocupic\ContaoStagingInstallationBanner\:
         resource: ../src/
         exclude: ../src/{DependencyInjection,Model}
-

@@ -43,12 +43,13 @@ class MarkocupicContaoStagingInstallationBannerExtension extends Extension
             new FileLocator(__DIR__.'/../../config')
         );
 
-        $loader->load('parameters.yaml');
         $loader->load('services.yaml');
-        $loader->load('listener.yaml');
 
         $rootKey = $this->getAlias();
 
         $container->setParameter($rootKey.'.is_staging_system', $config['is_staging_system']);
+        $container->setParameter($rootKey.'.backend_banner_translatable_text', $config['backend_banner_translatable_text']);
+        $container->setParameter($rootKey.'.backend_banner_text_color', $config['backend_banner_text_color']);
+        $container->setParameter($rootKey.'.backend_banner_bg_color', $config['backend_banner_bg_color']);
     }
 }

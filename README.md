@@ -1,6 +1,5 @@
 ![Alt text](docs/logo.png?raw=true "logo")
 
-
 # Contao Staging Installation Banner
 
 With this extension for **Contao CMS**, you can display a **banner** on your **staging environment** so that there is no confusion with the productive environment during daily work.
@@ -13,7 +12,6 @@ With this extension for **Contao CMS**, you can display a **banner** on your **s
 
 In order to display the banner in the frontend, it is necessary to integrate a frontend module into the layout.
 
-
 And in a further step, you need to make a small change in your configuration on the **staging environment**.
 
 ```
@@ -21,5 +19,8 @@ And in a further step, you need to make a small change in your configuration on 
 # this has to be done on the staging environment only
 
 markocupic_contao_staging_installation_banner:
-  is_staging_system: true
+    is_staging_system: true
+    backend_banner_translatable_text: '!!! STAGING SYSTEM !!!'
+    backend_banner_bg_color: '0082C7'
+    backend_banner_text_color: 'FFFFFF'
 ```

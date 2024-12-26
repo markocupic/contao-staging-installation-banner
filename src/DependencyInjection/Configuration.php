@@ -28,6 +28,9 @@ class Configuration implements ConfigurationInterface
         $treeBuilder->getRootNode()
             ->children()
                 ->booleanNode('is_staging_system')->defaultFalse()->end()
+                ->scalarNode('backend_banner_translatable_text')->defaultValue('staging_system')->end()
+                ->scalarNode('backend_banner_text_color')->defaultValue('FFFFFF')->end()
+                ->scalarNode('backend_banner_bg_color')->defaultValue('EC4899')->end()
             ->end()
         ;
 

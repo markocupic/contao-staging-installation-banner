@@ -16,3 +16,8 @@ declare(strict_types=1);
  * Miscellaneous
  */
 $GLOBALS['TL_LANG']['MSC']['staging_system'] = 'Staging/Test-System !!!';
+
+/**
+ * Make the headline text translatable
+ */
+$GLOBALS['TL_LANG']['CSIB']['staging_system'] = 'Staging/Test-System !!!';
