@@ -1,7 +1,8 @@
 {% autoescape false %}
     <div id="staging_installation_indicator">
         <div id="staging_installation_indicator_inner"{% if banner_css|default %} style="{{ banner_css }}"{% endif %}>
-            <img src="bundles/markocupiccontaostaginginstallationbanner/icons/icon.svg"> {{ banner_text }}
+            <img src="{{ asset('icons/icon.svg', 'markocupic_contao_staging_installation_banner') }}">
+            {% block banner_text %}<span class="staging_installation_banner--banner_text">{{ banner_text }}</span>{% endblock %}
         </div>
     </div>
 {% endautoescape %}
