@@ -2,26 +2,27 @@
 
 declare(strict_types=1);
 
-use Contao\EasyCodingStandard\Fixer\TypeHintOrderFixer;
+use Contao\EasyCodingStandard\Set\SetList;
 use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
 use PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
+use Symplify\EasyCodingStandard\ValueObject\Option;
 
-return static function (ECSConfig $ecsConfig): void {
-
-    $ecsConfig->skip([
+return ECSConfig::configure()
+    ->withSets([SetList::CONTAO])
+    ->withPaths([
+        __DIR__.'/../../../src',
+        __DIR__.'/../../../tests',
+    ])
+    ->withSkip([
         MethodChainingIndentationFixer::class => [
             '*/DependencyInjection/Configuration.php',
         ],
-        TypeHintOrderFixer::class,
-    ]);
-
-    $ecsConfig->ruleWithConfiguration(HeaderCommentFixer::class, [
+    ])
+    ->withParallel()
+    ->withSpacing(Option::INDENTATION_SPACES, "\n")
+    ->withConfiguredRule(HeaderCommentFixer::class, [
         'header' => "This file is part of contao-staging-installation-banner.\n\n(c) Marko Cupic 2023 <m.cupic@gmx.ch>\n@license MIT\nFor the full copyright and license information,\nplease view the LICENSE file that was distributed with this source code.\n@link https://github.com/markocupic/contao-staging-installation-banner",
-    ]);
-
-    $ecsConfig->parallel();
-    $ecsConfig->lineEnding("\n");
-
-    $parameters = $ecsConfig->parameters();
-};
+    ])
+    ->withCache(sys_get_temp_dir().'/ecs/markocupic/contao-staging-installation-banner')
+;

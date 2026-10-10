@@ -15,9 +15,8 @@ declare(strict_types=1);
 namespace Markocupic\ContaoStagingInstallationBanner\EventListener\ContaoHook;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
-use Contao\CoreBundle\Framework\Adapter;
-use Contao\CoreBundle\Framework\ContaoFramework;
-use Contao\StringUtil;
+use Markocupic\ContaoStagingInstallationBanner\Util\BannerUtil;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -27,13 +26,18 @@ use Twig\Error\SyntaxError;
 #[AsHook('outputBackendTemplate', priority: 100)]
 class OutputBackendTemplateListener
 {
+    public const TEMPLATE = '@MarkocupicContaoStagingInstallationBanner/be_staging_installation_indicator_banner.html.twig';
+
     public function __construct(
-        private readonly ContaoFramework $framework,
         private readonly Environment $twig,
         private readonly TranslatorInterface $translator,
+        #[Autowire('%markocupic_contao_staging_installation_banner.is_staging_system%')]
         private readonly bool $isStaging,
+        #[Autowire('%markocupic_contao_staging_installation_banner.backend_banner_bg_color%')]
         private readonly string $backendBannerBgColor,
+        #[Autowire('%markocupic_contao_staging_installation_banner.backend_banner_text_color%')]
         private readonly string $backendBannerTextColor,
+        #[Autowire('%markocupic_contao_staging_installation_banner.backend_banner_translatable_text%')]
         private readonly string $backendBannerTranslatableText,
     ) {
     }
@@ -45,35 +49,28 @@ class OutputBackendTemplateListener
      */
     public function __invoke(string $buffer, string $template): string
     {
-        if ($this->isStaging && str_starts_with($template, 'be_main')) {
-            $template = [];
-
-            // Make the banner Text translatable
-            $headline = match (true) {
-                !empty($this->backendBannerTranslatableText) => $this->backendBannerTranslatableText,
-                default => 'staging_system',
-            };
-
-            $template['banner_text'] = match (true) {
-                isset($GLOBALS['TL_LANG']['CSIB'][$headline]) => $this->translator->trans('CSIB.'.$headline, [], 'contao_default'),
-                default => $headline,
-            };
-
-            $arrStyle = ['color:#'.$this->backendBannerTextColor, 'background:#'.$this->backendBannerBgColor];
-            $template['banner_css'] = $this->getStringUtil()->specialchars(implode(';', $arrStyle));
-
-            $bannerContent = $this->twig->render('@MarkocupicContaoStagingInstallationBanner/be_staging_installation_indicator_banner.html.twig', $template);
-
-            $search = '<main id="main" aria-labelledby="main_headline">';
-            $replace = $search."\n".$bannerContent;
-            $buffer = str_replace($search, $replace, $buffer);
+        if (!$this->isStaging || !str_starts_with($template, 'be_main')) {
+            return $buffer;
         }
 
-        return $buffer;
-    }
+        // Make the banner text translatable
+        $bannerText = $this->backendBannerTranslatableText ?: 'staging_system';
 
-    protected function getStringUtil(): Adapter
-    {
-        return $this->framework->getAdapter(StringUtil::class);
+        if (isset($GLOBALS['TL_LANG']['CSIB'][$bannerText])) {
+            $bannerText = $this->translator->trans('CSIB.'.$bannerText, [], 'contao_default');
+        }
+
+        $bannerContent = $this->twig->render(self::TEMPLATE, [
+            'banner_text' => $bannerText,
+            'banner_css' => BannerUtil::buildStyle($this->backendBannerTextColor, $this->backendBannerBgColor),
+        ]);
+
+        // Insert the banner right after the opening <main id="main"> tag (Contao 5.3 and 6)
+        return preg_replace_callback(
+            '/<main\b[^>]*\bid="main"[^>]*>/',
+            static fn (array $matches): string => $matches[0]."\n".$bannerContent,
+            $buffer,
+            1,
+        ) ?? $buffer;
     }
 }

@@ -22,7 +22,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes'][StagingInstallationIndicatorBannerCo
 {config_legend},csib_textColor,csib_bgColor;
 {template_legend:hide},customTpl;
 {protected_legend:hide},protected;
-{expert_legend:hide},guests,cssID
+{expert_legend:hide},cssID
 ';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['csib_bannerText'] = [

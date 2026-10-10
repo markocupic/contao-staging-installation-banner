@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace Markocupic\ContaoStagingInstallationBanner;
 
 use Markocupic\ContaoStagingInstallationBanner\DependencyInjection\MarkocupicContaoStagingInstallationBannerExtension;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class MarkocupicContaoStagingInstallationBanner extends Bundle
@@ -28,13 +27,5 @@ class MarkocupicContaoStagingInstallationBanner extends Bundle
     public function getContainerExtension(): MarkocupicContaoStagingInstallationBannerExtension
     {
         return new MarkocupicContaoStagingInstallationBannerExtension();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container): void
-    {
-        parent::build($container);
     }
 }
