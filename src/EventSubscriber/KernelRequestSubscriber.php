@@ -16,6 +16,7 @@ namespace Markocupic\ContaoStagingInstallationBanner\EventSubscriber;
 
 use Contao\CoreBundle\Routing\ScopeMatcher;
 use Symfony\Component\Asset\Packages;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -23,23 +24,28 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class KernelRequestSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private bool $isStaging,
         private readonly Packages $packages,
         private readonly ScopeMatcher $scopeMatcher,
+        #[Autowire('%markocupic_contao_staging_installation_banner.is_staging_system%')]
+        private readonly bool $isStaging,
     ) {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [KernelEvents::REQUEST => 'onKernelRequest'];
     }
 
-    public function onKernelRequest(RequestEvent $e): void
+    public function onKernelRequest(RequestEvent $event): void
     {
-        $request = $e->getRequest();
+        if (!$this->isStaging || !$event->isMainRequest() || !$this->scopeMatcher->isBackendRequest($event->getRequest())) {
+            return;
+        }
 
-        if ($this->isStaging && $this->scopeMatcher->isBackendRequest($request)) {
-            $GLOBALS['TL_CSS'][] = $this->packages->getUrl('css/be_stylesheet.css', 'markocupic_contao_staging_installation_banner');
+        $stylesheet = $this->packages->getUrl('css/be_stylesheet.css', 'markocupic_contao_staging_installation_banner');
+
+        if (!\in_array($stylesheet, $GLOBALS['TL_CSS'] ?? [], true)) {
+            $GLOBALS['TL_CSS'][] = $stylesheet;
         }
     }
 }

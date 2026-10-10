@@ -4,6 +4,11 @@
 
 With this extension for **Contao CMS**, you can display a **banner** on your **staging environment** so that there is no confusion with the productive environment during daily work.
 
+## Requirements
+
+- PHP ^8.2
+- Contao ^5.3 || ^6.0
+
 **Backend:**
 ![Alt text](docs/backend.png?raw=true "backend")
 

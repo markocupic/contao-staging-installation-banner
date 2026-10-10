@@ -16,60 +16,45 @@ namespace Markocupic\ContaoStagingInstallationBanner\Controller\FrontendModule;
 
 use Contao\CoreBundle\Controller\FrontendModule\AbstractFrontendModuleController;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
-use Contao\CoreBundle\Framework\Adapter;
-use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Routing\ScopeMatcher;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\ModuleModel;
-use Contao\PageModel;
-use Contao\StringUtil;
+use Markocupic\ContaoStagingInstallationBanner\Util\BannerUtil;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[AsFrontendModule(category: 'staging_installation_indicator')]
+#[AsFrontendModule(StagingInstallationIndicatorBannerController::TYPE, category: 'staging_installation_indicator')]
 class StagingInstallationIndicatorBannerController extends AbstractFrontendModuleController
 {
     public const TYPE = 'staging_installation_indicator_banner';
 
     public function __construct(
-        private readonly ContaoFramework $framework,
         private readonly ScopeMatcher $scopeMatcher,
         private readonly TranslatorInterface $translator,
+        #[Autowire('%markocupic_contao_staging_installation_banner.is_staging_system%')]
         private readonly bool $isStaging,
     ) {
     }
 
-    public function __invoke(Request $request, ModuleModel $model, string $section, ?array $classes = null, ?PageModel $page = null): Response
+    protected function getResponse(FragmentTemplate $template, ModuleModel $model, Request $request): Response
     {
+        // Only display the banner on the staging system
         if (!$this->isStaging && $this->scopeMatcher->isFrontendRequest($request)) {
             return new Response('', Response::HTTP_NO_CONTENT);
         }
 
-        return parent::__invoke($request, $model, $section, $classes);
-    }
-
-    protected function getResponse(FragmentTemplate $template, ModuleModel $model, Request $request): Response
-    {
         // Make the banner text translatable
-        $headline = match (true) {
-            !empty($model->csib_bannerText) => $model->csib_bannerText,
-            default => 'staging_system',
-        };
+        $bannerText = (string) $model->csib_bannerText ?: 'staging_system';
 
-        $template->set('bannerText', match (true) {
-            isset($GLOBALS['TL_LANG']['CSIB'][$headline]) => $this->translator->trans('CSIB.'.$headline, [], 'contao_default'),
-            default => $headline,
-        });
+        if (isset($GLOBALS['TL_LANG']['CSIB'][$bannerText])) {
+            $bannerText = $this->translator->trans('CSIB.'.$bannerText, [], 'contao_default');
+        }
 
-        $arrStyle = ['color:#'.$model->csib_textColor, 'background:#'.$model->csib_bgColor];
-        $template->set('banner_attributes', sprintf('styles="%s"', $this->getStringUtil()->specialchars(implode(';', $arrStyle))));
+        $template->set('bannerText', $bannerText);
+        $template->set('banner_style', BannerUtil::buildStyle($model->csib_textColor, $model->csib_bgColor));
 
         return $template->getResponse();
-    }
-
-    protected function getStringUtil(): Adapter
-    {
-        return $this->framework->getAdapter(StringUtil::class);
     }
 }

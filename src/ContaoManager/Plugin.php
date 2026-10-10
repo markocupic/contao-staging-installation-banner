@@ -14,17 +14,19 @@ declare(strict_types=1);
 
 namespace Markocupic\ContaoStagingInstallationBanner\ContaoManager;
 
+use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
+use Markocupic\ContaoStagingInstallationBanner\MarkocupicContaoStagingInstallationBanner;
 
 class Plugin implements BundlePluginInterface
 {
     public function getBundles(ParserInterface $parser): array
     {
         return [
-            BundleConfig::create('Markocupic\ContaoStagingInstallationBanner\MarkocupicContaoStagingInstallationBanner')
-                ->setLoadAfter(['Contao\CoreBundle\ContaoCoreBundle']),
+            BundleConfig::create(MarkocupicContaoStagingInstallationBanner::class)
+                ->setLoadAfter([ContaoCoreBundle::class]),
         ];
     }
 }
